@@ -1,0 +1,22 @@
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
+public class Square implements DrawableShape
+{
+    private double x, y, width, height;
+    private Color color;
+
+    public Square(double x, double y, double size, Color color) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
+        gc.setFill(color);
+        gc.fillRect(x - width / 2, y - height / 2, width, height);
+    }
+}
