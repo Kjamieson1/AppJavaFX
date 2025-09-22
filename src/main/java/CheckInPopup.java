@@ -44,7 +44,7 @@ public class CheckInPopup {
         
         // Create the popup stage
         popupStage = new Stage();
-        popupStage.initStyle(StageStyle.UTILITY);
+        popupStage.initStyle(StageStyle.UNDECORATED);
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Patient Check-In");
         popupStage.setResizable(false);
@@ -54,99 +54,140 @@ public class CheckInPopup {
             popupStage.initOwner(parentStage);
         }
         
-        // Create the main layout
-        VBox mainLayout = new VBox(20);
+        // Create the main layout with modern styling
+        VBox mainLayout = new VBox(25);
         mainLayout.setAlignment(Pos.CENTER);
-        mainLayout.setPadding(new Insets(30, 40, 30, 40));
-        mainLayout.setStyle("-fx-background-color: #f0f8ff; -fx-border-color: #4682b4; -fx-border-width: 2;");
+        mainLayout.setPadding(new Insets(40, 50, 40, 50));
+        mainLayout.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 20;" +
+            "-fx-border-radius: 20;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 25, 0, 0, 8);" +
+            "-fx-border-color: #c8e6c9;" +
+            "-fx-border-width: 2;"
+        );
+        
+        // Create modern header with icon
+        Label headerLabel = new Label("🏥 Patient Check-In Ready");
+        headerLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 24));
+        headerLabel.setStyle("-fx-text-fill: #1b5e20;");
         
         // Create the main message label
         Label messageLabel = new Label("Please check in your next patient");
-        messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        messageLabel.setStyle("-fx-text-fill: #2c3e50;");
+        messageLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 16));
+        messageLabel.setStyle("-fx-text-fill: #2e7d32;");
         
-        // Create instruction label
+        // Create instruction label with modern styling
         Label instructionLabel = new Label("Click 'Start' to begin the check-in process");
-        instructionLabel.setFont(Font.font("Arial", 12));
-        instructionLabel.setStyle("-fx-text-fill: #34495e;");
+        instructionLabel.setFont(Font.font("Segoe UI", 14));
+        instructionLabel.setStyle("-fx-text-fill: #66bb6a;");
         
-        // Create the Start button
-        Button startButton = new Button("Start");
-        startButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        startButton.setPrefSize(100, 40);
+        // Create modern Start button
+        Button startButton = new Button("🚀 Start Check-In");
+        startButton.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        startButton.setPrefSize(200, 50);
         startButton.setStyle(
-            "-fx-background-color: #3498db; " +
-            "-fx-text-fill: white; " +
-            "-fx-background-radius: 5; " +
-            "-fx-border-radius: 5; " +
-            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);"
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 0, 4);"
         );
         
-        // Add hover effect to Start button
-        startButton.setOnMouseEntered(e -> 
+        // Add modern hover effect to Start button
+        startButton.setOnMouseEntered(e -> {
             startButton.setStyle(
-                "-fx-background-color: #2980b9; " +
-                "-fx-text-fill: white; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5; " +
-                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 3, 0, 0, 2);"
-            )
-        );
+                "-fx-background-color: linear-gradient(to bottom, #5cb85c, #449d44);" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 25;" +
+                "-fx-border-radius: 25;" +
+                "-fx-cursor: hand;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 18, 0, 0, 6);" +
+                "-fx-scale-x: 1.05;" +
+                "-fx-scale-y: 1.05;"
+            );
+        });
         
-        startButton.setOnMouseExited(e -> 
+        startButton.setOnMouseExited(e -> {
             startButton.setStyle(
-                "-fx-background-color: #3498db; " +
-                "-fx-text-fill: white; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5; " +
-                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);"
-            )
-        );
+                "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 25;" +
+                "-fx-border-radius: 25;" +
+                "-fx-cursor: hand;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 0, 4);" +
+                "-fx-scale-x: 1.0;" +
+                "-fx-scale-y: 1.0;"
+            );
+        });
         
         // Set button action
         startButton.setOnAction(e -> handleStartButtonClick());
         
-        // Create Cancel button (optional)
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setFont(Font.font("Arial", 12));
-        cancelButton.setPrefSize(80, 30);
+        // Create modern Cancel button
+        Button cancelButton = new Button("❌ Cancel");
+        cancelButton.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        cancelButton.setPrefSize(120, 40);
         cancelButton.setStyle(
-            "-fx-background-color: #95a5a6; " +
-            "-fx-text-fill: white; " +
-            "-fx-background-radius: 5; " +
-            "-fx-border-radius: 5;"
+            "-fx-background-color: linear-gradient(to bottom, #ef5350, #e53935);" +
+            "-fx-text-fill: white;" +
+            "-fx-background-radius: 20;" +
+            "-fx-border-radius: 20;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);"
         );
         
-        cancelButton.setOnMouseEntered(e -> 
+        cancelButton.setOnMouseEntered(e -> {
             cancelButton.setStyle(
-                "-fx-background-color: #7f8c8d; " +
-                "-fx-text-fill: white; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5;"
-            )
-        );
+                "-fx-background-color: linear-gradient(to bottom, #e53935, #c62828);" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 20;" +
+                "-fx-border-radius: 20;" +
+                "-fx-cursor: hand;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 3);" +
+                "-fx-scale-x: 1.05;" +
+                "-fx-scale-y: 1.05;"
+            );
+        });
         
-        cancelButton.setOnMouseExited(e -> 
+        cancelButton.setOnMouseExited(e -> {
             cancelButton.setStyle(
-                "-fx-background-color: #95a5a6; " +
-                "-fx-text-fill: white; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5;"
-            )
-        );
+                "-fx-background-color: linear-gradient(to bottom, #ef5350, #e53935);" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 20;" +
+                "-fx-border-radius: 20;" +
+                "-fx-cursor: hand;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);" +
+                "-fx-scale-x: 1.0;" +
+                "-fx-scale-y: 1.0;"
+            );
+        });
         
         cancelButton.setOnAction(e -> handleCancelButtonClick());
         
-        // Add components to layout
+        // Add components to layout with modern spacing
         mainLayout.getChildren().addAll(
+            headerLabel,
             messageLabel,
             instructionLabel,
             startButton,
             cancelButton
         );
         
-        // Create and set the scene
-        Scene scene = new Scene(mainLayout, 350, 200);
+        // Create container for the rounded border effect
+        VBox container = new VBox();
+        container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(20));
+        container.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #e8f5e8, #f1f8e9);" +
+            "-fx-background-radius: 25;"
+        );
+        container.getChildren().add(mainLayout);
+        
+        // Create and set the scene with modern dimensions
+        Scene scene = new Scene(container, 450, 350);
+        scene.setFill(null); // Transparent background for rounded corners
         popupStage.setScene(scene);
         
         // Center the popup on screen

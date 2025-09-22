@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -64,167 +66,491 @@ public class PatientFormGUI {
     
     private void initializeGUI() {
         stage = new Stage();
-        stage.setTitle("Patient Information Form");
+        stage.setTitle("HealthCare Pro - Patient Information");
         
-        // Create main layout
-        VBox mainLayout = new VBox(10);
-        mainLayout.setPadding(new Insets(20));
+        // Create main layout with modern styling
+        VBox mainLayout = new VBox(0);
+        mainLayout.setStyle(
+            "-fx-background: linear-gradient(to bottom, #e8f5e8, #f0f9f0);" // Light green gradient
+        );
         
-        // Create scroll pane for the form
+        // Create header section with save button
+        HBox headerSection = createModernHeaderSection();
+        
+        // Create scroll pane for the form with modern styling
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(mainLayout);
+        scrollPane.setStyle(
+            "-fx-background: transparent;" +
+            "-fx-background-color: transparent;"
+        );
+        
+        VBox formContent = new VBox(25);
+        formContent.setPadding(new Insets(30));
+        formContent.getChildren().addAll(
+            createModernPatientInfoSection(),
+            createModernPatientPictureSection(),
+            createModernMedicalHistorySection(),
+            createModernButtonSection()
+        );
+        
+        scrollPane.setContent(formContent);
         scrollPane.setFitToWidth(true);
         scrollPane.setPrefViewportHeight(600);
         
-        // Add sections to the form
-        mainLayout.getChildren().addAll(
-            createPatientInfoSection(),
-            createPatientPictureSection(),
-            createMedicalHistorySection(),
-            createButtonSection()
-        );
+        // Add header and form to main layout
+        mainLayout.getChildren().addAll(headerSection, scrollPane);
         
-        // Create scene and set stage
-        Scene scene = new Scene(scrollPane, 800, 700);
+        // Create scene with modern styling
+        Scene scene = new Scene(mainLayout, 900, 750);
         stage.setScene(scene);
+        stage.centerOnScreen();
         
         // Load existing patient data if any
         loadPatientData();
     }
     
-    private VBox createPatientInfoSection() {
-        VBox section = new VBox(10);
-        section.getChildren().add(new Label("Patient Demographics:"));
+    /**
+     * Create modern header section with title and save button
+     */
+    private HBox createModernHeaderSection() {
+        HBox header = new HBox();
+        header.setAlignment(Pos.CENTER);
+        header.setPadding(new Insets(25, 30, 25, 30));
+        header.setStyle(
+            "-fx-background: linear-gradient(to right, #1b5e20, #2e7d32);" // Dark green gradient
+        );
+        
+        // Title section
+        VBox titleSection = new VBox(5);
+        
+        Label titleLabel = new Label("Patient Information Form");
+        titleLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 24));
+        titleLabel.setStyle("-fx-text-fill: white;");
+        
+        Label subtitleLabel = new Label("Complete patient demographics and medical history");
+        subtitleLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
+        subtitleLabel.setStyle("-fx-text-fill: #c8e6c9;");
+        
+        titleSection.getChildren().addAll(titleLabel, subtitleLabel);
+        
+        // Create modern "Save and Leave Patient" button
+        Button saveAndLeaveButton = createModernSaveButton();
+        
+        // Add spacer to push save button to the right
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        
+        header.getChildren().addAll(titleSection, spacer, saveAndLeaveButton);
+        return header;
+    }
+    
+    /**
+     * Create modern save button
+     */
+    private Button createModernSaveButton() {
+        Button saveButton = new Button("💾 Save and Leave Patient");
+        saveButton.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
+        saveButton.setPrefSize(200, 45);
+        saveButton.setStyle(
+            "-fx-background-color: #ffc107;" +
+            "-fx-text-fill: #1b5e20;" +
+            "-fx-background-radius: 12;" +
+            "-fx-border-radius: 12;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);" +
+            "-fx-cursor: hand;"
+        );
+        
+        // Hover effects
+        saveButton.setOnMouseEntered(e -> 
+            saveButton.setStyle(
+                "-fx-background-color: #ffcd39;" +
+                "-fx-text-fill: #1b5e20;" +
+                "-fx-background-radius: 12;" +
+                "-fx-border-radius: 12;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 4);" +
+                "-fx-cursor: hand;" +
+                "-fx-scale-x: 1.02;" +
+                "-fx-scale-y: 1.02;"
+            )
+        );
+        
+        saveButton.setOnMouseExited(e -> 
+            saveButton.setStyle(
+                "-fx-background-color: #ffc107;" +
+                "-fx-text-fill: #1b5e20;" +
+                "-fx-background-radius: 12;" +
+                "-fx-border-radius: 12;" +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);" +
+                "-fx-cursor: hand;" +
+                "-fx-scale-x: 1.0;" +
+                "-fx-scale-y: 1.0;"
+            )
+        );
+        
+        saveButton.setOnAction(e -> saveAndLeavePatient());
+        return saveButton;
+    }
+    
+    private VBox createModernPatientInfoSection() {
+        VBox section = new VBox(20);
+        section.setPadding(new Insets(25));
+        section.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 15;" +
+            "-fx-border-radius: 15;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" +
+            "-fx-border-color: #e8f5e8;" +
+            "-fx-border-width: 1;"
+        );
+        
+        // Section header
+        Label sectionHeader = new Label("👤 Patient Demographics");
+        sectionHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
+        sectionHeader.setStyle("-fx-text-fill: #1b5e20;");
         
         GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(10));
+        grid.setHgap(20);
+        grid.setVgap(15);
+        grid.setPadding(new Insets(15, 0, 0, 0));
+        
+        // Style for labels
+        String labelStyle = "-fx-text-fill: #2e7d32; -fx-font-weight: bold; -fx-font-size: 14px;";
         
         // Row 0
-        grid.add(new Label("First Name:"), 0, 0);
-        firstNameField = new TextField();
+        Label firstNameLabel = new Label("First Name:");
+        firstNameLabel.setStyle(labelStyle);
+        grid.add(firstNameLabel, 0, 0);
+        firstNameField = createStyledTextField("Enter first name");
         grid.add(firstNameField, 1, 0);
         
-        grid.add(new Label("Last Name:"), 2, 0);
-        lastNameField = new TextField();
+        Label lastNameLabel = new Label("Last Name:");
+        lastNameLabel.setStyle(labelStyle);
+        grid.add(lastNameLabel, 2, 0);
+        lastNameField = createStyledTextField("Enter last name");
         grid.add(lastNameField, 3, 0);
         
         // Row 1
-        grid.add(new Label("Date of Birth:"), 0, 1);
+        Label dobLabel = new Label("Date of Birth:");
+        dobLabel.setStyle(labelStyle);
+        grid.add(dobLabel, 0, 1);
         dateOfBirthPicker = new DatePicker();
+        styleComponent(dateOfBirthPicker);
         grid.add(dateOfBirthPicker, 1, 1);
         
-        grid.add(new Label("Gender:"), 2, 1);
+        Label genderLabel = new Label("Gender:");
+        genderLabel.setStyle(labelStyle);
+        grid.add(genderLabel, 2, 1);
         genderComboBox = new ComboBox<>();
         genderComboBox.getItems().addAll("Male", "Female", "Other", "Prefer not to say");
+        styleComponent(genderComboBox);
         grid.add(genderComboBox, 3, 1);
         
         // Row 2
-        grid.add(new Label("Address:"), 0, 2);
-        addressField = new TextField();
+        Label addressLabel = new Label("Address:");
+        addressLabel.setStyle(labelStyle);
+        grid.add(addressLabel, 0, 2);
+        addressField = createStyledTextField("Enter complete address");
         grid.add(addressField, 1, 2, 3, 1); // span 3 columns
         
         // Row 3
-        grid.add(new Label("Phone:"), 0, 3);
-        phoneField = new TextField();
+        Label phoneLabel = new Label("Phone:");
+        phoneLabel.setStyle(labelStyle);
+        grid.add(phoneLabel, 0, 3);
+        phoneField = createStyledTextField("Enter phone number");
         grid.add(phoneField, 1, 3);
         
-        grid.add(new Label("Email:"), 2, 3);
-        emailField = new TextField();
+        Label emailLabel = new Label("Email:");
+        emailLabel.setStyle(labelStyle);
+        grid.add(emailLabel, 2, 3);
+        emailField = createStyledTextField("Enter email address");
         grid.add(emailField, 3, 3);
         
         // Row 4
-        grid.add(new Label("Emergency Contact:"), 0, 4);
-        emergencyContactField = new TextField();
+        Label emergencyContactLabel = new Label("Emergency Contact:");
+        emergencyContactLabel.setStyle(labelStyle);
+        grid.add(emergencyContactLabel, 0, 4);
+        emergencyContactField = createStyledTextField("Enter emergency contact name");
         grid.add(emergencyContactField, 1, 4);
         
-        grid.add(new Label("Emergency Phone:"), 2, 4);
-        emergencyPhoneField = new TextField();
+        Label emergencyPhoneLabel = new Label("Emergency Phone:");
+        emergencyPhoneLabel.setStyle(labelStyle);
+        grid.add(emergencyPhoneLabel, 2, 4);
+        emergencyPhoneField = createStyledTextField("Enter emergency phone");
         grid.add(emergencyPhoneField, 3, 4);
         
         // Row 5
-        grid.add(new Label("Insurance Provider:"), 0, 5);
-        insuranceProviderField = new TextField();
+        Label insuranceProviderLabel = new Label("Insurance Provider:");
+        insuranceProviderLabel.setStyle(labelStyle);
+        grid.add(insuranceProviderLabel, 0, 5);
+        insuranceProviderField = createStyledTextField("Enter insurance provider");
         grid.add(insuranceProviderField, 1, 5);
         
-        grid.add(new Label("Policy Number:"), 2, 5);
-        insurancePolicyField = new TextField();
+        Label policyLabel = new Label("Policy Number:");
+        policyLabel.setStyle(labelStyle);
+        grid.add(policyLabel, 2, 5);
+        insurancePolicyField = createStyledTextField("Enter policy number");
         grid.add(insurancePolicyField, 3, 5);
         
-        section.getChildren().add(grid);
+        section.getChildren().addAll(sectionHeader, grid);
         return section;
     }
     
-    private VBox createPatientPictureSection() {
-        VBox section = new VBox(10);
-        section.getChildren().add(new Label("Patient Picture:"));
+    /**
+     * Create styled text field
+     */
+    private TextField createStyledTextField(String promptText) {
+        TextField field = new TextField();
+        field.setPromptText(promptText);
+        styleComponent(field);
+        return field;
+    }
+    
+    /**
+     * Apply consistent styling to form components
+     */
+    private void styleComponent(javafx.scene.control.Control component) {
+        component.setStyle(
+            "-fx-background-color: #f8f9fa;" +
+            "-fx-border-color: #c8e6c9;" +
+            "-fx-border-width: 1;" +
+            "-fx-border-radius: 8;" +
+            "-fx-background-radius: 8;" +
+            "-fx-padding: 10;" +
+            "-fx-font-size: 14px;" +
+            "-fx-text-fill: #2e7d32;"
+        );
         
-        HBox pictureBox = new HBox(10);
-        pictureBox.setAlignment(Pos.CENTER_LEFT);
+        // Focus styling
+        component.focusedProperty().addListener((obs, oldFocus, newFocus) -> {
+            if (newFocus) {
+                component.setStyle(
+                    "-fx-background-color: white;" +
+                    "-fx-border-color: #4caf50;" +
+                    "-fx-border-width: 2;" +
+                    "-fx-border-radius: 8;" +
+                    "-fx-background-radius: 8;" +
+                    "-fx-padding: 10;" +
+                    "-fx-font-size: 14px;" +
+                    "-fx-text-fill: #2e7d32;" +
+                    "-fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.3), 8, 0, 0, 2);"
+                );
+            } else {
+                component.setStyle(
+                    "-fx-background-color: #f8f9fa;" +
+                    "-fx-border-color: #c8e6c9;" +
+                    "-fx-border-width: 1;" +
+                    "-fx-border-radius: 8;" +
+                    "-fx-background-radius: 8;" +
+                    "-fx-padding: 10;" +
+                    "-fx-font-size: 14px;" +
+                    "-fx-text-fill: #2e7d32;"
+                );
+            }
+        });
+    }
+    
+    private VBox createModernPatientPictureSection() {
+        VBox section = new VBox(20);
+        section.setPadding(new Insets(25));
+        section.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 15;" +
+            "-fx-border-radius: 15;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" +
+            "-fx-border-color: #e8f5e8;" +
+            "-fx-border-width: 1;"
+        );
         
+        // Section header
+        Label sectionHeader = new Label("📷 Patient Photo");
+        sectionHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
+        sectionHeader.setStyle("-fx-text-fill: #1b5e20;");
+        
+        // Picture container
+        VBox pictureContainer = new VBox(15);
+        pictureContainer.setAlignment(Pos.CENTER);
+        
+        // Image view for patient photo
         patientImageView = new ImageView();
-        patientImageView.setFitHeight(100);
-        patientImageView.setFitWidth(100);
+        patientImageView.setFitWidth(150);
+        patientImageView.setFitHeight(150);
         patientImageView.setPreserveRatio(true);
-        patientImageView.setStyle("-fx-border-color: gray; -fx-border-width: 1;");
+        patientImageView.setStyle(
+            "-fx-background-color: #f1f8e9;" +
+            "-fx-background-radius: 75;" +
+            "-fx-border-radius: 75;" +
+            "-fx-border-color: #4caf50;" +
+            "-fx-border-width: 3;" +
+            "-fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.3), 10, 0, 0, 2);"
+        );
         
-        Button selectPictureButton = new Button("Select Picture");
-        selectPictureButton.setOnAction(e -> selectPatientPicture());
+        // Default placeholder if no image
+        try {
+            // Set a default placeholder image or icon
+            patientImageView.setImage(new Image(getClass().getResourceAsStream("/placeholder-patient.png")));
+        } catch (Exception e) {
+            // If no placeholder image found, just use the styled empty view
+            LOGGER.warning(() -> "No placeholder image found: " + e.getMessage());
+        }
         
-        pictureBox.getChildren().addAll(patientImageView, selectPictureButton);
-        section.getChildren().add(pictureBox);
+        // Upload button
+        Button uploadButton = new Button("📁 Choose Photo");
+        uploadButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 14px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 12 24;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);"
+        );
+        
+        // Button hover effect
+        uploadButton.setOnMouseEntered(e -> uploadButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #5cb85c, #449d44);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 14px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 12 24;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 4);" +
+            "-fx-scale-x: 1.05;" +
+            "-fx-scale-y: 1.05;"
+        ));
+        
+        uploadButton.setOnMouseExited(e -> uploadButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 14px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 12 24;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);" +
+            "-fx-scale-x: 1.0;" +
+            "-fx-scale-y: 1.0;"
+        ));
+        
+        uploadButton.setOnAction(e -> selectPatientPicture());
+        
+        // Photo info label
+        Label photoInfo = new Label("📝 Upload a clear, recent photo (JPG, PNG)");
+        photoInfo.setStyle(
+            "-fx-text-fill: #6b7280;" +
+            "-fx-font-size: 12px;" +
+            "-fx-font-style: italic;"
+        );
+        
+        pictureContainer.getChildren().addAll(patientImageView, uploadButton, photoInfo);
+        section.getChildren().addAll(sectionHeader, pictureContainer);
         
         return section;
     }
     
-    private VBox createMedicalHistorySection() {
-        VBox section = new VBox(10);
-        section.getChildren().add(new Label("Medical History:"));
+    private VBox createModernMedicalHistorySection() {
+        VBox section = new VBox(20);
+        section.setPadding(new Insets(25));
+        section.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 15;" +
+            "-fx-border-radius: 15;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 3);" +
+            "-fx-border-color: #e8f5e8;" +
+            "-fx-border-width: 1;"
+        );
+        
+        // Section header
+        Label sectionHeader = new Label("🏥 Medical History");
+        sectionHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
+        sectionHeader.setStyle("-fx-text-fill: #1b5e20;");
         
         HBox medicalBox = new HBox(20);
         
         // Medications section
-        VBox medicationsBox = createMedicalListSection("Medications:", 
+        VBox medicationsBox = createModernMedicalListSection("💊 Medications:", 
             medicationsListView = new ListView<>(),
             medicationInput = new TextField(),
             "Add Medication",
             () -> addMedication());
         
         // Diagnoses section
-        VBox diagnosesBox = createMedicalListSection("Diagnoses:", 
+        VBox diagnosesBox = createModernMedicalListSection("🩺 Diagnoses:", 
             diagnosesListView = new ListView<>(),
             diagnosisInput = new TextField(),
             "Add Diagnosis",
             () -> addDiagnosis());
         
         // Allergies section
-        VBox allergiesBox = createMedicalListSection("Allergies:", 
+        VBox allergiesBox = createModernMedicalListSection("⚠️ Allergies:", 
             allergiesListView = new ListView<>(),
             allergyInput = new TextField(),
             "Add Allergy",
             () -> addAllergy());
         
         medicalBox.getChildren().addAll(medicationsBox, diagnosesBox, allergiesBox);
-        section.getChildren().add(medicalBox);
+        section.getChildren().addAll(sectionHeader, medicalBox);
         
         return section;
     }
     
-    private VBox createMedicalListSection(String title, ListView<String> listView, 
+    private VBox createModernMedicalListSection(String title, ListView<String> listView, 
                                          TextField inputField, String buttonText, Runnable addAction) {
-        VBox box = new VBox(5);
-        box.getChildren().add(new Label(title));
+        VBox box = new VBox(15);
+        box.setPadding(new Insets(15));
+        box.setStyle(
+            "-fx-background-color: #f8fdf8;" +
+            "-fx-background-radius: 10;" +
+            "-fx-border-radius: 10;" +
+            "-fx-border-color: #c8e6c9;" +
+            "-fx-border-width: 1;"
+        );
         
-        listView.setPrefHeight(100);
-        listView.setPrefWidth(200);
+        Label titleLabel = new Label(title);
+        titleLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        titleLabel.setStyle("-fx-text-fill: #2e7d32;");
         
-        inputField.setPromptText("Enter " + title.toLowerCase().substring(0, title.length()-1));
+        listView.setPrefHeight(120);
+        listView.setPrefWidth(220);
+        listView.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-border-color: #c8e6c9;" +
+            "-fx-border-width: 1;" +
+            "-fx-border-radius: 8;" +
+            "-fx-background-radius: 8;"
+        );
         
-        Button addButton = new Button(buttonText);
+        inputField.setPromptText("Enter " + title.toLowerCase().substring(2, title.length()-1));
+        styleComponent(inputField);
+        
+        Button addButton = new Button("➕ " + buttonText);
+        addButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 12px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 8 16;" +
+            "-fx-background-radius: 20;" +
+            "-fx-border-radius: 20;" +
+            "-fx-cursor: hand;"
+        );
         addButton.setOnAction(e -> addAction.run());
         
-        Button removeButton = new Button("Remove Selected");
+        Button removeButton = new Button("🗑️ Remove");
+        removeButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #ef5350, #e53935);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 12px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 8 16;" +
+            "-fx-background-radius: 20;" +
+            "-fx-border-radius: 20;" +
+            "-fx-cursor: hand;"
+        );
         removeButton.setOnAction(e -> {
             String selected = listView.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -233,30 +559,158 @@ public class PatientFormGUI {
             }
         });
         
-        HBox buttonBox = new HBox(5);
+        HBox buttonBox = new HBox(8);
+        buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(addButton, removeButton);
         
-        box.getChildren().addAll(listView, inputField, buttonBox);
+        box.getChildren().addAll(titleLabel, listView, inputField, buttonBox);
         return box;
     }
     
-    private VBox createButtonSection() {
-        VBox section = new VBox(10);
+    private VBox createModernButtonSection() {
+        VBox section = new VBox(20);
         section.setAlignment(Pos.CENTER);
+        section.setPadding(new Insets(30, 25, 25, 25));
         
-        HBox buttonBox = new HBox(10);
+        HBox buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER);
         
-        Button saveButton = new Button("Save Patient");
+        // Save Button
+        Button saveButton = new Button("💾 Save Patient");
+        saveButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);"
+        );
+        
+        // Save button hover effect
+        saveButton.setOnMouseEntered(e -> saveButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #5cb85c, #449d44);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);" +
+            "-fx-scale-x: 1.05;" +
+            "-fx-scale-y: 1.05;"
+        ));
+        
+        saveButton.setOnMouseExited(e -> saveButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" +
+            "-fx-scale-x: 1.0;" +
+            "-fx-scale-y: 1.0;"
+        ));
+        
         saveButton.setOnAction(e -> savePatient());
         
-        Button clearButton = new Button("Clear Form");
+        // Clear Button
+        Button clearButton = new Button("🗑️ Clear Form");
+        clearButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #ffa726, #ff9800);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);"
+        );
+        
+        // Clear button hover effect
+        clearButton.setOnMouseEntered(e -> clearButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #ff9800, #f57c00);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);" +
+            "-fx-scale-x: 1.05;" +
+            "-fx-scale-y: 1.05;"
+        ));
+        
+        clearButton.setOnMouseExited(e -> clearButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #ffa726, #ff9800);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" +
+            "-fx-scale-x: 1.0;" +
+            "-fx-scale-y: 1.0;"
+        ));
+        
         clearButton.setOnAction(e -> clearForm());
         
-        Button appointmentButton = new Button("Manage Appointments");
-        appointmentButton.setOnAction(e -> openAppointmentManager());
+        // Check-in Button
+        Button checkInButton = new Button("📋 Start Check-in");
+        checkInButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #42a5f5, #2196f3);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);"
+        );
         
-        buttonBox.getChildren().addAll(saveButton, clearButton, appointmentButton);
+        // Check-in button hover effect
+        checkInButton.setOnMouseEntered(e -> checkInButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);" +
+            "-fx-scale-x: 1.05;" +
+            "-fx-scale-y: 1.05;"
+        ));
+        
+        checkInButton.setOnMouseExited(e -> checkInButton.setStyle(
+            "-fx-background-color: linear-gradient(to bottom, #42a5f5, #2196f3);" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 15 30;" +
+            "-fx-background-radius: 25;" +
+            "-fx-border-radius: 25;" +
+            "-fx-cursor: hand;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" +
+            "-fx-scale-x: 1.0;" +
+            "-fx-scale-y: 1.0;"
+        ));
+        
+        checkInButton.setOnAction(e -> startCheckIn());
+        
+        buttonBox.getChildren().addAll(saveButton, clearButton, checkInButton);
         section.getChildren().add(buttonBox);
         
         return section;
@@ -277,7 +731,7 @@ public class PatientFormGUI {
                 patientImageView.setImage(image);
                 currentPatient.setPatientPicturePath(selectedImagePath);
             } catch (Exception e) {
-                LOGGER.warning("Failed to load image: " + e.getMessage());
+                LOGGER.warning(() -> "Failed to load image: " + e.getMessage());
                 showAlert("Error", "Failed to load the selected image.");
             }
         }
@@ -342,12 +796,12 @@ public class PatientFormGUI {
             if (currentPatient.validatePatientData()) {
                 currentPatient.savePatient();
                 showAlert("Success", "Patient information saved successfully!");
-                LOGGER.info("Patient saved: " + currentPatient.getFullName());
+                LOGGER.info(() -> "Patient saved: " + currentPatient.getFullName());
             } else {
                 showAlert("Validation Error", "Please fill in all required fields (First Name, Last Name, Date of Birth).");
             }
         } catch (Exception e) {
-            LOGGER.warning("Error saving patient: " + e.getMessage());
+            LOGGER.warning(() -> "Error saving patient: " + e.getMessage());
             showAlert("Error", "Failed to save patient information: " + e.getMessage());
         }
     }
@@ -381,6 +835,51 @@ public class PatientFormGUI {
         // For now, it starts with a fresh patient
     }
     
+    /**
+     * Start the check-in process for the current patient
+     */
+    private void startCheckIn() {
+        if (currentPatient == null) {
+            showAlert("No Patient", "Please create a patient first before starting check-in.");
+            return;
+        }
+        
+        try {
+            // Update current patient with form data
+            updateCurrentPatientFromForm();
+            
+            // Create and show check-in GUI - it manages its own stage
+            new PatientCheckInGUI(currentPatient);
+            
+        } catch (Exception e) {
+            LOGGER.warning(() -> "Error starting check-in: " + e.getMessage());
+            showAlert("Check-in Error", "Failed to start check-in process: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Update the current patient object with data from form fields
+     */
+    private void updateCurrentPatientFromForm() {
+        if (currentPatient == null) return;
+        
+        // Update basic info
+        currentPatient.setFirstName(firstNameField.getText());
+        currentPatient.setLastName(lastNameField.getText());
+        currentPatient.setDateOfBirth(dateOfBirthPicker.getValue());
+        currentPatient.setGender(genderComboBox.getValue());
+        currentPatient.setAddress(addressField.getText());
+        currentPatient.setPhoneNumber(phoneField.getText());
+        currentPatient.setEmail(emailField.getText());
+        currentPatient.setEmergencyContact(emergencyContactField.getText());
+        currentPatient.setEmergencyPhone(emergencyPhoneField.getText());
+        currentPatient.setInsuranceProvider(insuranceProviderField.getText());
+        currentPatient.setInsurancePolicyNumber(insurancePolicyField.getText());
+        
+        // Update medical history from list views
+        updatePatientMedicalHistory();
+    }
+    
     private void openAppointmentManager() {
         // Save current form data first
         savePatient();
@@ -395,6 +894,108 @@ public class PatientFormGUI {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    /**
+     * Save all patient data and exit the form
+     */
+    private void saveAndLeavePatient() {
+        try {
+            // First save the current patient data normally
+            savePatient();
+            
+            // Create a patient data object from current patient
+            PatientDataObject patientData = createPatientDataFromForm();
+            
+            // Save to storage
+            PatientDataStorage storage = PatientDataStorage.getInstance();
+            boolean saved = storage.savePatientData(patientData);
+            
+            if (saved) {
+                // Show success message with summary
+                showSaveSuccessDialog(patientData, storage);
+                
+                // Close the window
+                stage.close();
+            } else {
+                showAlert("Save Error", "Failed to save patient data to storage. Please try again.");
+            }
+            
+        } catch (Exception e) {
+            LOGGER.warning(() -> "Error saving patient data: " + e.getMessage());
+            showAlert("Save Error", "Error saving patient data: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Create PatientDataObject from current form data
+     */
+    private PatientDataObject createPatientDataFromForm() {
+        // Update current patient with form data first
+        updateCurrentPatientFromForm();
+        
+        // Create patient data object
+        PatientDataObject patientData = new PatientDataObject();
+        
+        // Populate from current patient
+        patientData.setFirstName(currentPatient.getFirstName());
+        patientData.setLastName(currentPatient.getLastName());
+        patientData.setDateOfBirth(currentPatient.getDateOfBirth());
+        patientData.setGender(currentPatient.getGender());
+        patientData.setAge(currentPatient.getAge());
+        patientData.setPhoneNumber(currentPatient.getPhoneNumber());
+        patientData.setEmail(currentPatient.getEmail());
+        patientData.setAddress(currentPatient.getAddress());
+        patientData.setEmergencyContact(currentPatient.getEmergencyContact());
+        patientData.setEmergencyPhone(currentPatient.getEmergencyPhone());
+        patientData.setInsuranceProvider(currentPatient.getInsuranceProvider());
+        patientData.setInsurancePolicyNumber(currentPatient.getInsurancePolicyNumber());
+        patientData.setPatientPicturePath(currentPatient.getPatientPicturePath());
+        
+        // Copy medical information
+        patientData.setMedications(currentPatient.getMedications());
+        patientData.setDiagnoses(currentPatient.getDiagnoses());
+        patientData.setAllergies(currentPatient.getAllergies());
+        
+        // Mark identification as complete since we have a filled form
+        patientData.setStepCompleted("identification", true);
+        patientData.setStepCompleted("contact", true);
+        
+        // Add session note
+        patientData.addSessionNote("Patient data entered via Patient Information Form");
+        
+        return patientData;
+    }
+    
+    /**
+     * Show save success dialog with patient summary and storage statistics
+     */
+    private void showSaveSuccessDialog(PatientDataObject patientData, PatientDataStorage storage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Patient Data Saved Successfully");
+        alert.setHeaderText("Patient: " + patientData.getFullName());
+        
+        StringBuilder message = new StringBuilder();
+        message.append("Patient data has been saved successfully!\n\n");
+        message.append("Patient ID: ").append(patientData.getPatientId()).append("\n");
+        message.append("Form Completion: ").append(patientData.getCompletionPercentage()).append("%\n");
+        message.append("Data Source: Patient Information Form\n\n");
+        
+        message.append("STORAGE SUMMARY:\n");
+        message.append("Total Patients Saved: ").append(storage.getPatientCount()).append("\n");
+        message.append("Patients from Today: ").append(storage.getPatientsFromToday().size()).append("\n");
+        message.append("Completed Check-ins: ").append(storage.getCompletedCheckIns().size()).append("\n\n");
+        
+        message.append("The patient can be accessed later using Patient ID: ");
+        message.append(patientData.getPatientId());
+        
+        alert.setContentText(message.toString());
+        
+        // Make the dialog resizable for long content
+        alert.setResizable(true);
+        alert.getDialogPane().setPrefSize(450, 300);
+        
         alert.showAndWait();
     }
     
