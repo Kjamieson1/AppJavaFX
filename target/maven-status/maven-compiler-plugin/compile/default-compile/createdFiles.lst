@@ -1,1 +1,14 @@
+PatientFormGUI.class
+PatientCheckInInterface.class
+PatientForm.class
+CheckInWorkflow.class
+PatientDataObject.class
+CheckInPopup.class
+PatientDataStorage.class
+NewPatient$Appointment.class
 Main.class
+AppointmentManagerGUI.class
+PatientCheckInGUI.class
+CheckInWorkflow$CheckInSession.class
+NewPatient.class
+NewPatient$Appointment$AppointmentStatus.class
