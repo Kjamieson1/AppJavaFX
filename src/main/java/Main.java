@@ -63,15 +63,16 @@ public class Main extends Application {
             startCheckInWorkflow(primaryStage);
         });
         
-        // Create View Saved Patients button with secondary green
+        // Create View Saved Patients button with purple accent
         Button viewPatientsBtn = createModernButton(
-            "👥 View Saved Patients",
+            "� View Saved Patients",
             "#6f42c1", "#563d7c", // Purple accent for variety
             200, 55
         );
         viewPatientsBtn.setOnAction(e -> {
-            LOGGER.info("Opening saved patients view...");
-            showSavedPatientsDialog(primaryStage);
+            LOGGER.info("Opening View Saved Patients...");
+            PatientListViewGUI listView = new PatientListViewGUI();
+            listView.show();
         });
         
         buttonContainer.getChildren().addAll(patientFormBtn, checkInBtn, viewPatientsBtn);
@@ -93,7 +94,7 @@ public class Main extends Application {
         header.setAlignment(Pos.CENTER);
         header.setPadding(new Insets(20));
         
-        // Main title
+        // Main titlef
         Label titleLabel = new Label("HealthCare Pro");
         titleLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 32));
         titleLabel.setStyle("-fx-text-fill: #1b5e20;"); // Dark green
