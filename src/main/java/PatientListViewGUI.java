@@ -79,12 +79,22 @@ public class PatientListViewGUI
     idLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
     Label phoneLabel = new Label("Phone: ");
     phoneLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
+    Label emailLabel = new Label("Email: ");
+    emailLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
+    Label emergencyLabel = new Label("Emergency Contact: ");
+    emergencyLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
+    Label emergencyPhoneLabel = new Label("Emergency Phone: ");
+    emergencyPhoneLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
+    Label insuranceLabel = new Label("Insurance Provider: ");
+    insuranceLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
+    Label policyLabel = new Label("Policy Number: ");
+    policyLabel.setStyle("-fx-text-fill: " + primaryTextColor + ";");
 
-    Button openBtn = new Button("Open full view");
+    Button openBtn = new Button("Open medical view");
     openBtn.setStyle("-fx-background-color: #66bb6a; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 8 14 8 14;");
     openBtn.setDisable(true);
 
-    details.getChildren().addAll(title, nameLabel, idLabel, phoneLabel, openBtn);
+    details.getChildren().addAll(title, nameLabel, idLabel, phoneLabel, emailLabel, emergencyLabel, emergencyPhoneLabel, insuranceLabel, policyLabel, openBtn);
 
         // Selection handling
         listView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
@@ -93,12 +103,22 @@ public class PatientListViewGUI
                 nameLabel.setText("Name: ");
                 idLabel.setText("ID: ");
                 phoneLabel.setText("Phone: ");
+                emailLabel.setText("Email: ");
+                emergencyLabel.setText("Emergency Contact: ");
+                emergencyPhoneLabel.setText("Emergency Phone: ");
+                insuranceLabel.setText("Insurance Provider: ");
+                policyLabel.setText("Policy Number: ");
                 openBtn.setDisable(true);
             } else 
             {
                 nameLabel.setText("Name: " + newV.getFullName().trim());
                 idLabel.setText("ID: " + newV.getPatientId());
                 phoneLabel.setText("Phone: " + (newV.getPhoneNumber() == null ? "" : newV.getPhoneNumber()));
+                emailLabel.setText("Email: " + (newV.getEmail() == null ? "" : newV.getEmail()));
+                emergencyLabel.setText("Emergency Contact: " + (newV.getEmergencyContact() == null ? "" : newV.getEmergencyContact()));
+                emergencyPhoneLabel.setText("Emergency Phone: " + (newV.getEmergencyPhone() == null ? "" : newV.getEmergencyPhone()));
+                insuranceLabel.setText("Insurance Provider: " + (newV.getInsuranceProvider() == null ? "" : newV.getInsuranceProvider()));
+                policyLabel.setText("Policy Number: " + (newV.getInsurancePolicyNumber() == null ? "" : newV.getInsurancePolicyNumber()));
                 openBtn.setDisable(false);
             }
         });
