@@ -12,12 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-// Note: this project uses default (no) package for its model classes such as
-// PatientDataObject and PatientDataStorage. We reference them directly below.
-
-/**
- * GUI class for displaying and managing patient form data
- */
+// Class to display a form for a new patient or details of an existing patient
 public class PatientFormViewGUI {
 
     private static final Logger LOGGER = Logger.getLogger(PatientFormViewGUI.class.getName());
@@ -26,9 +21,9 @@ public class PatientFormViewGUI {
     private NewPatient currentPatient;
     private PatientDataObject patientData;
     
-    // Form fields for patient demographics
-    private TextField firstNameField;
-    private TextField lastNameField;
+    // Form fields for patient Name
+    private TextField firstName;
+    private TextField lastName;
 
     public PatientFormViewGUI() 
     {
@@ -45,15 +40,15 @@ public class PatientFormViewGUI {
     private void initializeGUI() 
     {
         stage = new Stage();
-        stage.setTitle("Open Patient Form");
+        stage.setTitle("Current Patient Form");
         
-        // Create main layout with modern styling
+        // Create main layout with styling
         VBox mainLayout = new VBox(0);
         mainLayout.setStyle(
             "-fx-background: linear-gradient(to bottom, #e8f5e8, #f0f9f0);" 
         );
         
-        // Create scroll pane for the form with modern styling
+        // Create scroll pane for the form with styling
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setStyle(
             "-fx-background: transparent;" +
@@ -115,11 +110,11 @@ public class PatientFormViewGUI {
 
             HBox names = new HBox(8);
             names.setAlignment(Pos.CENTER_LEFT);
-            firstNameField = new TextField();
-            firstNameField.setPromptText("First name");
-            lastNameField = new TextField();
-            lastNameField.setPromptText("Last name");
-            names.getChildren().addAll(firstNameField, lastNameField);
+            firstName = new TextField();
+            firstName.setPromptText("First name");
+            lastName = new TextField();
+            lastName.setPromptText("Last name");
+            names.getChildren().addAll(firstName, lastName);
 
             content.getChildren().addAll(header, names);
         }
@@ -148,9 +143,7 @@ public class PatientFormViewGUI {
         stage.close();
     }
 
-    /**
-     * Return a safe string for display; avoids NPEs when fields are null.
-     */
+    // Return a safe string for display; avoids NPEs when fields are null.
     private String safe(Object o) 
     {
         return o == null ? "" : String.valueOf(o);

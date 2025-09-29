@@ -15,9 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-/**
- * Simple UI that displays multiple saved patients and lets the user open one.
- */
+// Class to display a list of patients and allow selection to view details
 public class PatientListViewGUI 
 {
 
@@ -37,7 +35,7 @@ public class PatientListViewGUI
 
         SplitPane split = new SplitPane();
 
-        // Apply app background to the root split by wrapping in a VBox
+        // Apply app background
         VBox root = new VBox();
         root.setStyle("-fx-background: linear-gradient(to bottom, #e8f5e8, #f0f9f0);");
 
@@ -64,7 +62,7 @@ public class PatientListViewGUI
                 }
             });
 
-    // Right: details and actions (styled)
+    // Right: details and actions
     VBox details = new VBox(14);
     details.setPadding(new Insets(22));
     details.setAlignment(Pos.TOP_LEFT);
